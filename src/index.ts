@@ -1,4 +1,4 @@
-import * as polkadot from '@polkadot/keyring';
+import { encodeAddress, decodeAddress } from '@polkadot/keyring';
 import * as bech32 from 'bech32';
 import * as bs58check from 'bs58check';
 import * as cashaddr from 'cashaddrjs';
@@ -241,11 +241,11 @@ if(!eos.PublicKey.isValid(data)) {
 }
 
 function ksmAddrEncoder(data: Buffer): string {
-  return polkadot.encodeAddress(data, 2);
+  return encodeAddress(data, 2);
 }
 
 function ksmAddrDecoder(data: string): Buffer {
-  return new Buffer(polkadot.decodeAddress(data));
+  return new Buffer(decodeAddress(data));
 }
 
 const formats: IFormat[] = [
