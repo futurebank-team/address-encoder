@@ -1,15 +1,17 @@
-import { decodeAddress as polkadotDecodeAddress, encodeAddress as polkadotEncodeAddress }  from '@polkadot/util-crypto/address';
+
+import { decodeAddress as polkadotDecode, encodeAddress as polkadotEncode } from '@polkadot/util-crypto/address'
 import { decode as bech32Decode, encode as bech32Encode, fromWords as bech32FromWords, toWords as bech32ToWords } from 'bech32';
 import { decode as bs58checkDecode, encode as bs58checkEncode } from 'bs58check';
 // tslint:disable-next-line:no-var-requires
 import { decode as cashaddrDecode, encode as cashaddrEncode } from 'cashaddrjs';
-// @ts-ignore
 import { PublicKey as eosPublicKey } from 'eosjs-ecc/lib/key_public';
 // @ts-ignore
-import { b32decode, b32encode, isValid   } from 'nem-sdk/build/model/address'
+import eosPublicKey from 'eosjs-ecc/lib/key_public';
 // @ts-ignore
-import { hex2a, ua2hex  } from 'nem-sdk/build/utils/convert.js';
-import { codec as Xrpcodec } from 'ripple-address-codec/dist/xrp-codec';
+import { b32decode, b32encode, isValid   } from 'nem-sdk/build/model/address';
+// @ts-ignore
+import { hex2a, ua2hex  } from 'nem-sdk/build/utils/convert';
+import { codec as xrpCodec } from 'ripple-address-codec/dist/xrp-codec';
 import {
   isValidChecksumAddress as rskIsValidChecksumAddress, stripHexPrefix as rskStripHexPrefix,
   toChecksumAddress as rskToChecksumAddress } from 'rskjs-util';
@@ -248,11 +250,11 @@ if(!eosPublicKey.isValid(data)) {
 }
 
 function ksmAddrEncoder(data: Buffer): string {
-  return polkadotEncodeAddress(data, 2);
+  return polkadotEncode(data, 2)
 }
 
 function ksmAddrDecoder(data: string): Buffer {
-  return new Buffer(polkadotDecodeAddress(data));
+  return new Buffer(polkadotDecode(data))
 }
 
 const formats: IFormat[] = [
@@ -273,8 +275,8 @@ const formats: IFormat[] = [
   hexChecksumChain('RSK', 137, 30),
   {
     coinType: 144,
-    decoder: (data: string) => Xrpcodec.decodeChecked(data),
-    encoder: (data: Buffer) => Xrpcodec.encodeChecked(data),
+    decoder: (data: string) => xrpCodec.decodeChecked(data),
+    encoder: (data: Buffer) => xrpCodec.encodeChecked(data),
     name: 'XRP',
   },
   {
